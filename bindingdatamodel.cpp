@@ -171,8 +171,18 @@ void
 BindingDataModel::setupModelData(AbstractMetaFunction* metaFunc, BindingDataItem* parent)
 {
     BindingDataItem* item = new FunctionDataItem(metaFunc, parent);
+    foreach (AbstractMetaArgument* arg, metaFunc->arguments())
+        setupModelData(arg, item);
     parent->appendChild(item);
 }
+
+void
+BindingDataModel::setupModelData(AbstractMetaArgument* metaArg, BindingDataItem* parent)
+{
+    BindingDataItem* item = new ArgumentDataItem(metaArg, parent);
+    parent->appendChild(item);
+}
+
 
 void
 BindingDataModel::setupModelData(AbstractMetaField* metaField, BindingDataItem* parent)

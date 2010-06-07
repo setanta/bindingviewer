@@ -6,6 +6,7 @@
 
 class AbstractMetaClass;
 class AbstractMetaFunction;
+class AbstractMetaArgument;
 class AbstractMetaField;
 class AbstractMetaEnum;
 class AbstractMetaEnumValue;
@@ -101,6 +102,17 @@ public:
     virtual QVariant data(int column) const;
 private:
     AbstractMetaFunction* m_data;
+};
+
+
+class ArgumentDataItem : public BindingDataItem
+{
+public:
+    ArgumentDataItem(AbstractMetaArgument* data, BindingDataItem* parent = 0);
+    virtual QVariant decoration() const;
+    virtual QVariant data(int column) const;
+private:
+    AbstractMetaArgument* m_data;
 };
 
 

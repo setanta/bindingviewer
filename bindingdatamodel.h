@@ -37,6 +37,7 @@ private:
     void setupModelData(AbstractMetaClass* metaClass, BindingDataItem* parent);
     void setupModelData(const AbstractMetaFunctionList& funcs, BindingDataItem* parent);
     void setupModelData(AbstractMetaFunction* metaFunc, BindingDataItem* parent);
+    void setupModelData(AbstractMetaArgument* metaArg, BindingDataItem* parent);
     void setupModelData(AbstractMetaField* metaField, BindingDataItem* parent);
     void setupModelData(AbstractMetaEnum* metaEnum, BindingDataItem* parent);
     void setupModelData(AbstractMetaEnumValue* metaEnumValue, BindingDataItem* parent);

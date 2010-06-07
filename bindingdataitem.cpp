@@ -226,6 +226,33 @@ FunctionDataItem::decoration() const
 
 
 // ----------------------------------------------------------------------------
+ArgumentDataItem::ArgumentDataItem(AbstractMetaArgument* data, BindingDataItem* parent)
+    : BindingDataItem(parent), m_data(data)
+{
+}
+
+QVariant
+ArgumentDataItem::data(int column) const
+{
+    switch (column) {
+        case BindingDataItem::ItemName:
+            return QVariant(m_data->argumentName());
+        case BindingDataItem::ItemType:
+            return QVariant(m_data->type()->name());
+        case BindingDataItem::ItemModifications:
+            return QVariant("");
+    }
+    return QVariant();
+}
+
+QVariant
+ArgumentDataItem::decoration() const
+{
+    return QVariant(Qt::lightGray);
+}
+
+
+// ----------------------------------------------------------------------------
 FieldDataItem::FieldDataItem(AbstractMetaField* data, BindingDataItem* parent)
     : BindingDataItem(parent), m_data(data)
 {
