@@ -10,6 +10,7 @@ class AbstractMetaField;
 class AbstractMetaEnum;
 class AbstractMetaEnumValue;
 class PrimitiveTypeEntry;
+class ContainerTypeEntry;
 
 class BindingDataItem
 {
@@ -58,6 +59,16 @@ public:
     virtual QVariant data(int column) const;
 private:
     PrimitiveTypeEntry* m_data;
+};
+
+class ContainerDataItem : public BindingDataItem
+{
+public:
+    ContainerDataItem(ContainerTypeEntry* data, BindingDataItem* parent = 0);
+    virtual QVariant decoration() const;
+    virtual QVariant data(int column) const;
+private:
+    ContainerTypeEntry* m_data;
 };
 
 class ClassDataItem : public BindingDataItem

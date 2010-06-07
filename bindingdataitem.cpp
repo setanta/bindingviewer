@@ -78,6 +78,74 @@ PrimitiveDataItem::decoration() const
 
 
 // ----------------------------------------------------------------------------
+ContainerDataItem::ContainerDataItem(ContainerTypeEntry* data, BindingDataItem* parent)
+    : BindingDataItem(parent), m_data(data)
+{
+}
+
+QVariant
+ContainerDataItem::data(int column) const
+{
+    switch (column) {
+        case BindingDataItem::ItemName:
+            return QVariant(m_data->name());
+        case BindingDataItem::ItemType:
+        {
+            QString containerType = "container";
+            switch (m_data->type()) {
+                case ContainerTypeEntry::ListContainer:
+                    containerType += " (list)";
+                    break;
+                case ContainerTypeEntry::StringListContainer:
+                    containerType += " (string list)";
+                    break;
+                case ContainerTypeEntry::LinkedListContainer:
+                    containerType += " (linked list)";
+                    break;
+                case ContainerTypeEntry::VectorContainer:
+                    containerType += " (vector)";
+                    break;
+                case ContainerTypeEntry::StackContainer:
+                    containerType += " (stack)";
+                    break;
+                case ContainerTypeEntry::QueueContainer:
+                    containerType += " (queue)";
+                    break;
+                case ContainerTypeEntry::SetContainer:
+                    containerType += " (set)";
+                    break;
+                case ContainerTypeEntry::MapContainer:
+                    containerType += " (map)";
+                    break;
+                case ContainerTypeEntry::MultiMapContainer:
+                    containerType += " (multimap)";
+                    break;
+                case ContainerTypeEntry::HashContainer:
+                    containerType += " (hash)";
+                    break;
+                case ContainerTypeEntry::MultiHashContainer:
+                    containerType += " (multihash)";
+                    break;
+                case ContainerTypeEntry::PairContainer:
+                    containerType += " (pair)";
+                    break;
+            }
+            return QVariant(containerType);
+        }
+        case BindingDataItem::ItemModifications:
+            return QVariant("");
+    }
+    return QVariant();
+}
+
+QVariant
+ContainerDataItem::decoration() const
+{
+    return QVariant(Qt::darkMagenta);
+}
+
+
+// ----------------------------------------------------------------------------
 ClassDataItem::ClassDataItem(AbstractMetaClass* data, BindingDataItem* parent)
     : BindingDataItem(parent), m_data(data)
 {

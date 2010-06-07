@@ -113,6 +113,8 @@ BindingDataModel::setupModelData()
 {
     foreach (const PrimitiveTypeEntry* primitiveTypeEntry, m_apiExtractor->primitiveTypes())
         setupModelData(primitiveTypeEntry, m_rootItem);
+    foreach (const ContainerTypeEntry* containerTypeEntry, m_apiExtractor->containerTypes())
+        setupModelData(containerTypeEntry, m_rootItem);
     foreach (AbstractMetaClass* metaClass, m_apiExtractor->classes()) {
         if (!metaClass->typeEntry()->generateCode())
             continue;
@@ -131,6 +133,13 @@ void
 BindingDataModel::setupModelData(const PrimitiveTypeEntry* primitiveTypeEntry, BindingDataItem* parent)
 {
     BindingDataItem* item = new PrimitiveDataItem(const_cast<PrimitiveTypeEntry*>(primitiveTypeEntry), parent);
+    parent->appendChild(item);
+}
+
+void
+BindingDataModel::setupModelData(const ContainerTypeEntry* containerTypeEntry, BindingDataItem* parent)
+{
+    BindingDataItem* item = new ContainerDataItem(const_cast<ContainerTypeEntry*>(containerTypeEntry), parent);
     parent->appendChild(item);
 }
 
