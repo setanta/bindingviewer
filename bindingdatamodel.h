@@ -10,6 +10,7 @@
 #include <abstractmetalang.h>
 
 class ApiExtractor;
+class PrimitiveTypeEntry;
 class BindingDataItem;
 
 class BindingDataModel : public QAbstractItemModel
@@ -30,6 +31,7 @@ public:
 
 private:
     void setupModelData();
+    void setupModelData(const PrimitiveTypeEntry* metaClass, BindingDataItem* parent);
     void setupModelData(AbstractMetaClass* metaClass, BindingDataItem* parent);
     void setupModelData(const AbstractMetaFunctionList& funcs, BindingDataItem* parent);
     void setupModelData(AbstractMetaFunction* metaFunc, BindingDataItem* parent);

@@ -111,6 +111,8 @@ BindingDataModel::columnCount(const QModelIndex& parent) const
 void
 BindingDataModel::setupModelData()
 {
+    foreach (const PrimitiveTypeEntry* primitiveTypeEntry, m_apiExtractor->primitiveTypes())
+        setupModelData(primitiveTypeEntry, m_rootItem);
     foreach (AbstractMetaClass* metaClass, m_apiExtractor->classes()) {
         if (!metaClass->typeEntry()->generateCode())
             continue;
@@ -123,6 +125,13 @@ BindingDataModel::setupModelData()
         setupModelData(metaEnum, m_rootItem);
     foreach (const AbstractMetaFunctionList& funcs, getOverloads())
         setupModelData(funcs, m_rootItem);
+}
+
+void
+BindingDataModel::setupModelData(const PrimitiveTypeEntry* primitiveTypeEntry, BindingDataItem* parent)
+{
+    BindingDataItem* item = new PrimitiveDataItem(const_cast<PrimitiveTypeEntry*>(primitiveTypeEntry), parent);
+    parent->appendChild(item);
 }
 
 void

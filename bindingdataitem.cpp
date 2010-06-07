@@ -51,6 +51,33 @@ HeaderDataItem::data(int column) const
 
 
 // ----------------------------------------------------------------------------
+PrimitiveDataItem::PrimitiveDataItem(PrimitiveTypeEntry* data, BindingDataItem* parent)
+    : BindingDataItem(parent), m_data(data)
+{
+}
+
+QVariant
+PrimitiveDataItem::data(int column) const
+{
+    switch (column) {
+        case BindingDataItem::ItemName:
+            return QVariant(m_data->name());
+        case BindingDataItem::ItemType:
+            return QVariant("primitive");
+        case BindingDataItem::ItemModifications:
+            return QVariant("");
+    }
+    return QVariant();
+}
+
+QVariant
+PrimitiveDataItem::decoration() const
+{
+    return QVariant(Qt::red);
+}
+
+
+// ----------------------------------------------------------------------------
 ClassDataItem::ClassDataItem(AbstractMetaClass* data, BindingDataItem* parent)
     : BindingDataItem(parent), m_data(data)
 {

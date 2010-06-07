@@ -9,6 +9,7 @@ class AbstractMetaFunction;
 class AbstractMetaField;
 class AbstractMetaEnum;
 class AbstractMetaEnumValue;
+class PrimitiveTypeEntry;
 
 class BindingDataItem
 {
@@ -49,6 +50,15 @@ private:
     QStringList m_data;
 };
 
+class PrimitiveDataItem : public BindingDataItem
+{
+public:
+    PrimitiveDataItem(PrimitiveTypeEntry* data, BindingDataItem* parent = 0);
+    virtual QVariant decoration() const;
+    virtual QVariant data(int column) const;
+private:
+    PrimitiveTypeEntry* m_data;
+};
 
 class ClassDataItem : public BindingDataItem
 {
