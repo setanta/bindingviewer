@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BindingViewer</class>
+ <widget class="QMainWindow" name="BindingViewer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Binding Viewer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTreeView" name="bindingDataView">
+      <property name="animated">
+       <bool>true</bool>
+      </property>
+      <attribute name="headerDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <attribute name="headerHighlightSections">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="headerShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="headerStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Binding">
+    <property name="title">
+     <string>&amp;Binding</string>
+    </property>
+    <addaction name="action_Import"/>
+    <addaction name="action_Quit"/>
+   </widget>
+   <addaction name="menu_Binding"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_Import">
+   <property name="text">
+    <string>&amp;Import</string>
+   </property>
+  </action>
+  <action name="action_Quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>action_Quit</sender>
+   <signal>activated()</signal>
+   <receiver>BindingViewer</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
