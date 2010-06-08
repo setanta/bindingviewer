@@ -46,6 +46,12 @@ private:
 
     ApiExtractor* m_apiExtractor;
     BindingDataItem* m_rootItem;
+    BindingDataItem* m_classesSeparator;
+    BindingDataItem* m_containerTypesSeparator;
+    BindingDataItem* m_primitiveTypesSeparator;
+    BindingDataItem* m_globalEnumsSeparator;
+    BindingDataItem* m_globalFunctionsSeparator;
+
     QString m_packageName;
 };
 

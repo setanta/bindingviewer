@@ -17,6 +17,7 @@ BindingDataItem::~BindingDataItem()
 void
 BindingDataItem::appendChild(BindingDataItem* child)
 {
+    child->m_parent = this;
     m_children.append(child);
 }
 
@@ -46,7 +47,9 @@ HeaderDataItem::HeaderDataItem(const QStringList& data, BindingDataItem* parent)
 QVariant
 HeaderDataItem::data(int column) const
 {
-    return QVariant(m_data.at(column));
+    if (column < m_data.count())
+        return QVariant(m_data.at(column));
+    return QVariant();
 }
 
 
@@ -63,7 +66,6 @@ PrimitiveDataItem::data(int column) const
         case BindingDataItem::ItemName:
             return QVariant(m_data->name());
         case BindingDataItem::ItemType:
-            return QVariant("primitive");
         case BindingDataItem::ItemModifications:
             return QVariant("");
     }
@@ -90,48 +92,44 @@ ContainerDataItem::data(int column) const
         case BindingDataItem::ItemName:
             return QVariant(m_data->name());
         case BindingDataItem::ItemType:
-        {
-            QString containerType = "container";
             switch (m_data->type()) {
                 case ContainerTypeEntry::ListContainer:
-                    containerType += " (list)";
+                    return QVariant("list");
                     break;
                 case ContainerTypeEntry::StringListContainer:
-                    containerType += " (string list)";
+                    return QVariant("string list");
                     break;
                 case ContainerTypeEntry::LinkedListContainer:
-                    containerType += " (linked list)";
+                    return QVariant("linked list");
                     break;
                 case ContainerTypeEntry::VectorContainer:
-                    containerType += " (vector)";
+                    return QVariant("vector");
                     break;
                 case ContainerTypeEntry::StackContainer:
-                    containerType += " (stack)";
+                    return QVariant("stack");
                     break;
                 case ContainerTypeEntry::QueueContainer:
-                    containerType += " (queue)";
+                    return QVariant("queue");
                     break;
                 case ContainerTypeEntry::SetContainer:
-                    containerType += " (set)";
+                    return QVariant("set");
                     break;
                 case ContainerTypeEntry::MapContainer:
-                    containerType += " (map)";
+                    return QVariant("map");
                     break;
                 case ContainerTypeEntry::MultiMapContainer:
-                    containerType += " (multimap)";
+                    return QVariant("multimap");
                     break;
                 case ContainerTypeEntry::HashContainer:
-                    containerType += " (hash)";
+                    return QVariant("hash");
                     break;
                 case ContainerTypeEntry::MultiHashContainer:
-                    containerType += " (multihash)";
+                    return QVariant("multihash");
                     break;
                 case ContainerTypeEntry::PairContainer:
-                    containerType += " (pair)";
+                    return QVariant("pair");
                     break;
             }
-            return QVariant(containerType);
-        }
         case BindingDataItem::ItemModifications:
             return QVariant("");
     }
@@ -158,7 +156,7 @@ ClassDataItem::data(int column) const
         case BindingDataItem::ItemName:
             return QVariant(m_data->name());
         case BindingDataItem::ItemType:
-            return QVariant(m_data->isNamespace() ? "namespace" : "class");
+            return QVariant(m_data->isNamespace() ? "namespace" : "");
         case BindingDataItem::ItemModifications:
             return QVariant("");
     }
@@ -184,9 +182,9 @@ FunctionOverloadDataItem::data(int column) const
 {
     switch (column) {
         case BindingDataItem::ItemName:
-            return QVariant(QString("%1 (%2)").arg(m_data.first()->name()).arg(m_data.count()));
+            return QVariant(m_data.first()->name());
         case BindingDataItem::ItemType:
-            return QVariant("overloads");
+            return QVariant(QString("%1 overload%2").arg(m_data.count()).arg((m_data.count() == 1) ? "" : "s"));
     }
     return QVariant();
 }
@@ -211,7 +209,10 @@ FunctionDataItem::data(int column) const
         case BindingDataItem::ItemName:
             return QVariant(m_data->minimalSignature());
         case BindingDataItem::ItemType:
-            return QVariant("function");
+            if (m_data->type())
+                return QVariant(m_data->type()->name());
+            else if (!m_data->isConstructor())
+                return QVariant("void");
         case BindingDataItem::ItemModifications:
             return QVariant("");
     }
@@ -238,7 +239,12 @@ ArgumentDataItem::data(int column) const
         case BindingDataItem::ItemName:
             return QVariant(m_data->argumentName());
         case BindingDataItem::ItemType:
-            return QVariant(m_data->type()->name());
+        {
+            QString text = m_data->type()->name();
+            if (!m_data->defaultValueExpression().isEmpty())
+                text += " = " + m_data->defaultValueExpression();
+            return QVariant(text);
+        }
         case BindingDataItem::ItemModifications:
             return QVariant("");
     }

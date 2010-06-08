@@ -7,8 +7,24 @@ BindingDataModel::BindingDataModel(ApiExtractor* dataSource, QObject* parent)
     : QAbstractItemModel(parent), m_apiExtractor(dataSource)
 {
     QStringList headerData;
-    headerData << "Name" << "Type" << "Modifications";
+    headerData << "Name" << "Info" << "Modifications";
     m_rootItem = new HeaderDataItem(headerData);
+
+    m_classesSeparator = new HeaderDataItem(QStringList("Classes & Namespaces"));
+    m_rootItem->appendChild(m_classesSeparator);
+
+    m_primitiveTypesSeparator = new HeaderDataItem(QStringList("Primitive Types"));
+    m_rootItem->appendChild(m_primitiveTypesSeparator);
+
+    m_containerTypesSeparator = new HeaderDataItem(QStringList("Container Types"));
+    m_rootItem->appendChild(m_containerTypesSeparator);
+
+    m_globalEnumsSeparator = new HeaderDataItem(QStringList("Global Enums"));
+    m_rootItem->appendChild(m_globalEnumsSeparator);
+
+    m_globalFunctionsSeparator = new HeaderDataItem(QStringList("Global Functions"));
+    m_rootItem->appendChild(m_globalFunctionsSeparator);
+
     setupModelData();
 }
 
@@ -112,21 +128,21 @@ void
 BindingDataModel::setupModelData()
 {
     foreach (const PrimitiveTypeEntry* primitiveTypeEntry, m_apiExtractor->primitiveTypes())
-        setupModelData(primitiveTypeEntry, m_rootItem);
+        setupModelData(primitiveTypeEntry, m_primitiveTypesSeparator);
     foreach (const ContainerTypeEntry* containerTypeEntry, m_apiExtractor->containerTypes())
-        setupModelData(containerTypeEntry, m_rootItem);
+        setupModelData(containerTypeEntry, m_containerTypesSeparator);
     foreach (AbstractMetaClass* metaClass, m_apiExtractor->classes()) {
         if (!metaClass->typeEntry()->generateCode())
             continue;
         if (!metaClass->enclosingClass())
-            setupModelData(metaClass, m_rootItem);
+            setupModelData(metaClass, m_classesSeparator);
         if (m_packageName.isEmpty() && !metaClass->package().isEmpty())
             m_packageName = metaClass->package();
     }
     foreach (AbstractMetaEnum* metaEnum, m_apiExtractor->globalEnums())
-        setupModelData(metaEnum, m_rootItem);
+        setupModelData(metaEnum, m_globalEnumsSeparator);
     foreach (const AbstractMetaFunctionList& funcs, getOverloads())
-        setupModelData(funcs, m_rootItem);
+        setupModelData(funcs, m_globalFunctionsSeparator);
 }
 
 void
