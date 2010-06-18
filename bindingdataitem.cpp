@@ -214,7 +214,12 @@ FunctionDataItem::data(int column) const
             else if (!m_data->isConstructor())
                 return QVariant("void");
         case BindingDataItem::ItemModifications:
-            return QVariant("");
+            QStringList mods;
+            if (m_data->name() != m_data->originalName())
+                mods << QString("renamed: " + m_data->name());
+            if (m_data->isModifiedRemoved())
+                mods << "removed";
+            return QVariant(mods.join("; "));
     }
     return QVariant();
 }
@@ -246,7 +251,14 @@ ArgumentDataItem::data(int column) const
             return QVariant(text);
         }
         case BindingDataItem::ItemModifications:
-            return QVariant("");
+            QStringList mods;
+            if (m_data->defaultValueExpression() != m_data->originalDefaultValueExpression()) {
+                QString txt = QString("default value changed from '%1' to '%2'")
+                        .arg(m_data->originalDefaultValueExpression())
+                        .arg(m_data->defaultValueExpression());
+                mods << txt;
+            }
+            return QVariant(mods.join("; "));
     }
     return QVariant();
 }
